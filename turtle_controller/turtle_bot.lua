@@ -1,7 +1,9 @@
 modem = peripheral.wrap("right")
 
 if not modem then return end;
+
 modem.open(1);
+
 local eventData;
 local cInput;
 local currentAction;
@@ -20,19 +22,23 @@ local function setCurrentAction()
     end
 end
 
+turtle.equipLeft();
+setCurrentAction()
+turtle.equipLeft();
+
 while true do
     eventData = {os.pullEvent("modem_message")}
     cInput = eventData[5];
     print(turtle.getFuelLevel())
-    if cInput == "w" or cInput == "W" then
+    if (cInput):lower() == "w" then
         turtle.forward()
-    elseif cInput == "d" or cInput == "D" then
+    elseif (cInput):lower() == "d" then
         turtle.turnRight();
-    elseif cInput == "a" or cInput == "A" then
+    elseif (cInput):lower() == "a" then
         turtle.turnLeft();
-    elseif cInput == "s" or cInput == "S" then
+    elseif (cInput):lower() == "s" then
         turtle.back()
-    elseif cInput == "e" or cInput == "E" then
+    elseif (cInput):lower() == "e" then
         if currentAction == "dig" then
             turtle.dig()
         elseif currentAction == "attack" then
@@ -40,7 +46,7 @@ while true do
         end
     elseif cInput == " " then
         turtle.up()
-    elseif cInput == "z" or cInput == "Z" then
+    elseif (cInput):lower() == "z" then
         turtle.down()
     elseif cInput == "1" then
         if currentSlot > 1 then
