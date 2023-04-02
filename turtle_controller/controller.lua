@@ -1,6 +1,6 @@
 local modem = peripheral.wrap("back")
 
-modem.pullEvent(1)
+modem.open(1)
 
 while true do
     local eventData = {os.pullEvent("char")}
