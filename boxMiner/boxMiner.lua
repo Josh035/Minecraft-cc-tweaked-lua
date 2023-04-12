@@ -48,7 +48,7 @@ local function main()
             print("moving back to Start");
             turtle.turnRight()
             turtle.turnRight()
-            for d = 0, depth - 1, 1 do
+            for d = 0, depth - 2, 1 do
                 turtle.forward();
             end
         end
