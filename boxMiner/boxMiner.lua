@@ -5,7 +5,7 @@ local depth = 5;
 local function mineLine()
     -- minus 2 because the turtle is also a block;
     for x = 0, depth - 2, 1 do
-        if inspect() then
+        if turtle.inspect() then
             turtle.dig();
         end
         turtle.forward();
@@ -13,7 +13,7 @@ local function mineLine()
 end
 
 local function turnUp()
-    if inspectUp() then
+    if turtle.inspectUp() then
         turtle.digUp();
     end
     turtle.up();
@@ -22,13 +22,11 @@ local function turnUp()
 end
 
 local function moveNextCol()
-    print("-------------");
-
     for y = 0, height - 1, 1 do
         turtle.down();
     end
 
-    turtle.turnRight();
+    turtle.turnLeft();
     if turtle.inspect() then
         turtle.dig();
     end
@@ -41,11 +39,12 @@ local function main()
     for x=0,width-1,1 do
         for y = 0, height - 1, 1 do
             mineLine();
-            turnUp();
+            if y ~= height - 1 then
+                turnUp();
+            end
         end
 
         if (height % 2 == 1) then
-            print("moving back to Start");
             turtle.turnRight()
             turtle.turnRight()
             for d = 0, depth - 2, 1 do
@@ -53,7 +52,9 @@ local function main()
             end
         end
 
-        moveNextCol();
+        if x ~= width - 1 then
+            moveNextCol();
+        end
     end
 end
 
