@@ -1,4 +1,4 @@
-local Player = {1, 2};
+local Player = {0};
 local Fruit = 10
 -- screen: y=18, x=51
 
@@ -25,7 +25,7 @@ end
 
 local function getBoardCoords(player)
     local returnTable = {1, 1};
-    if player < sWidth + 1 then
+    if player < sWidth then
         returnTable[1] = player;
     else
         returnTable[2] = math.floor(player / sWidth);
@@ -33,7 +33,19 @@ local function getBoardCoords(player)
         returnTable[2] = returnTable[2] + 1;
     end
 
+    returnTable[1] = returnTable[1] + 1;
+
     return returnTable;
+end
+
+local function checkFruitAvailable(fruitPos)
+    for p in ipairs(Player) do
+        if fruitPos == Player[p] then
+            return false;
+        end
+    end
+
+    return true;
 end
 
 -- moves the head of the player (snake), depending of the input provided by the user
@@ -76,6 +88,11 @@ local function moveHead(char)
 
         Fruit = math.random(1, sWidth*sHeight)
 
+        -- lua doesn't have the FUCKING not operator(!)
+        while (false == checkFruitAvailable(Fruit)) do
+            Fruit = math.random(1, sWidth * sHeight);
+        end
+
         Player[#Player + 1] = Player[#Player];
     end
 end
@@ -95,11 +112,10 @@ local function draw()
 
     local fPos = getBoardCoords(Fruit);
 
-    paintutils.drawPixel(fPos[1], fPos[2], colors.orange);
-
     for p in ipairs(Player) do
         drawPlayer(Player[p]);
     end
+    paintutils.drawPixel(fPos[1], fPos[2], colors.orange);
 end
 
 local function main()
