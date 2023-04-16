@@ -16,8 +16,8 @@ local sHeight = 18;
 local dirInputBuffer = {RIGHT};
 local dirBufferMax = 3
 
-local tickDelay = 0.02;
-local frameDelay = 0.5;
+local tickDelay = 1 / 64;
+local frameDelay = 1 / 30;
 
 -- /globals
 
@@ -62,37 +62,6 @@ local function checkFruitAvailable(fruitPos)
     end
 
     return true;
-end
-
--- moves the head of the player (snake), depending of the input provided by the user
-local function moveHead(char)
-    -- maps the input char to the corresponding movement of the player head
-    -- NOTE: of course lua doesn't have a switch case statement, why would it?
-    if (char):lower() == "d" then
-        gPlayer[1] = gPlayer[1]+ 1;
-    elseif (char):lower() == "a" then
-        gPlayer[1] = gPlayer[1] - 1;
-    elseif (char):lower() == "s" then
-        gPlayer[1] = gPlayer[1] + sWidth;
-    elseif (char):lower() == "w" then
-        gPlayer[1] = gPlayer[1] - sWidth;
-    end
-
-    if gPlayer[1] == gFruit then
-
-        gFruit = math.random(1, sWidth*sHeight)
-
-        -- lua doesn't have the FUCKING not operator(!)
-        while (false == checkFruitAvailable(gFruit)) do
-            gFruit = gFruit + 1;
-            if gFruit > sWidth * sHeight then
-                -- Fruit is set to one, because lua fucking starts every array at index 1
-                gFruit = 1;
-            end
-        end
-
-        gPlayer[#gPlayer + 1] = gPlayer[#gPlayer];
-    end
 end
 
 local function validateFruit()
@@ -158,7 +127,6 @@ local function handleInput()
     local cInput = (char):lower();
 
     if #dirInputBuffer <= dirBufferMax then
-
         -- again, a switch statement would be really FUCKING useful here.
         -- enums would be nice too i guess
         if cInput == "w" then
@@ -170,7 +138,6 @@ local function handleInput()
         elseif cInput == "a" then
             dirInputBuffer[#dirInputBuffer + 1] = LEFT;
         end
-
     end
 end
 
